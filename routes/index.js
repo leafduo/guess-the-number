@@ -17,6 +17,10 @@ exports.getToken = function(req, res){
 
 exports.guess = function(req, res){
     Guess.findOne({_id: req.params.id}, function(err, guess){
+        if (guess === null) {
+            res.send(404);
+            return;
+        }
         var comp;
         if (req.params.guess > guess.answer) {
             comp = 'bigger';
