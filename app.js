@@ -5,9 +5,12 @@
 
 var express = require('express')
   , routes = require('./routes')
-  , http = require('http');
+  , http = require('http')
+  , mongoose = require('mongoose');
 
 var app = express();
+
+mongoose.connect('mongodb://localhost/guess');
 
 app.configure(function(){
   app.set('port', process.env.PORT || 3000);
@@ -26,7 +29,8 @@ app.configure('development', function(){
   app.use(express.errorHandler());
 });
 
-app.get('/', routes.getToken);
+app.post('/guess', routes.getToken);
+app.get('/guess/:id/:guess', routes.guess);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
